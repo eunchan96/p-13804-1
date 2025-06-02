@@ -12,7 +12,8 @@ public class AppTest {
         String rs = AppTestRunner.run("");
 
         assertThat(rs)
-                .contains("==명언 앱==");
+                .contains("==명언 앱==")
+                .contains("명령)");
     }
 
     @Test
@@ -25,7 +26,37 @@ public class AppTest {
                 """);
 
         assertThat(rs)
-                .contains("명령) 등록")
-                .contains("명언: 나의 죽음을 적들에게 알리지 말라.");
+                .contains("명언:")
+                .contains("작가:");
+    }
+
+    @Test
+    @DisplayName("등록 시 명언 번호 출력")
+    public void t3() {
+        String rs = AppTestRunner.run("""
+                등록
+                나의 죽음을 적들에게 알리지 말라.
+                작자미상
+                """);
+
+        assertThat(rs)
+                .contains("1번 명언이 등록되었습니다.");
+    }
+
+    @Test
+    @DisplayName("등록 시 명언 번호 증가")
+    public void t4() {
+        String rs = AppTestRunner.run("""
+                등록
+                나의 죽음을 적들에게 알리지 말라.
+                작자미상
+                등록
+                내 사전에 불가능이란 없다.
+                나폴레옹
+                """);
+
+        assertThat(rs)
+                .contains("1번 명언이 등록되었습니다.")
+                .contains("2번 명언이 등록되었습니다.");
     }
 }
