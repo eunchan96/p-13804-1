@@ -1,7 +1,7 @@
 package com.back;
 
 public class WiseSaying {
-    private int id;
+    private final int id;
     private String content;
     private String author;
 
@@ -21,5 +21,13 @@ public class WiseSaying {
 
     public String getAuthor() {
         return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

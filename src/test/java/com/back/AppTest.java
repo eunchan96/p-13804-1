@@ -59,4 +59,22 @@ public class AppTest {
                 .contains("1번 명언이 등록되었습니다.")
                 .contains("2번 명언이 등록되었습니다.");
     }
+
+    @Test
+    @DisplayName("목록")
+    public void t5() {
+        String rs = AppTestRunner.run("""
+                등록
+                나의 죽음을 적들에게 알리지 말라.
+                작자미상
+                등록
+                내 사전에 불가능이란 없다.
+                나폴레옹
+                목록
+                """);
+
+        assertThat(rs)
+                .contains("2 / 내 사전에 불가능이란 없다. / 나폴레옹")
+                .contains("1 / 나의 죽음을 적들에게 알리지 말라. / 작자미상");
+    }
 }
