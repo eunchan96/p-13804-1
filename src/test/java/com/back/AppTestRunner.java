@@ -6,8 +6,8 @@ import java.io.ByteArrayOutputStream;
 import java.util.Scanner;
 
 public class AppTestRunner {
-    public static String run(String cmd) {
-        Scanner scanner = TestUtil.genScanner("종료");
+    public static String run(String input) {
+        Scanner scanner = TestUtil.genScanner(input + "\n종료");
 
         ByteArrayOutputStream output = TestUtil.setOutToByteArray();
         new App(scanner).run();
