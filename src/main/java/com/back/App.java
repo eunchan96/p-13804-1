@@ -17,15 +17,16 @@ public class App {
         while (true) {
             System.out.print("명령) ");
             String cmd = scanner.nextLine();
+            String actionName = cmd.split("\\?", 2)[0];
 
-            switch (cmd) {
+            switch (actionName) {
                 case "종료" -> {
                     systemController.actionExit();
                     return;
                 }
                 case "등록" -> wiseSayingController.actionWrite();
                 case "목록" -> wiseSayingController.actionList();
-                case "삭제" -> wiseSayingController.actionDelete();
+                case "삭제" -> wiseSayingController.actionDelete(cmd);
                 default -> System.out.println("알 수 없는 명령어입니다.");
             }
         }

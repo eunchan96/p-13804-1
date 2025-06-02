@@ -20,4 +20,11 @@ public class WiseSayingService {
     public List<WiseSaying> getforList(){
         return wiseSayingRepository.getForList();
     }
+
+    public boolean delete(int id) {
+        WiseSaying wiseSaying = wiseSayingRepository.findById(id);
+        if (wiseSaying == null) return false;
+        wiseSayingRepository.delete(wiseSaying);
+        return true;
+    }
 }

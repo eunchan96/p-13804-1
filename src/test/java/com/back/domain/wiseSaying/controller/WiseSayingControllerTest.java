@@ -69,4 +69,39 @@ public class WiseSayingControllerTest {
                 .contains("1 / 작자미상 / 나의 죽음을 적들에게 알리지 말라.");
     }
 
+    @Test
+    @DisplayName("삭제")
+    public void t5() {
+        String rs = AppTestRunner.run("""
+                등록
+                나의 죽음을 적들에게 알리지 말라.
+                작자미상
+                등록
+                내 사전에 불가능이란 없다.
+                나폴레옹
+                삭제?id=1
+                목록
+                """);
+
+        assertThat(rs)
+                .contains("1번 명언이 삭제되었습니다.")
+                .contains("2 / 나폴레옹 / 내 사전에 불가능이란 없다.")
+                .doesNotContain("1 / 작자미상 / 나의 죽음을 적들에게 알리지 말라.");
+    }
+
+    @Test
+    @DisplayName("`삭제?id=1`를 2번 시도했을 때의 예외처리")
+    void t6() {
+        String rs = AppTestRunner.run("""
+                등록
+                현재를 사랑하라.
+                작자미상
+                삭제?id=1
+                삭제?id=1
+                """);
+
+        assertThat(rs)
+                .contains("1번 명언이 삭제되었습니다.")
+                .contains("1번 명언은 존재하지 않습니다.");
+    }
 }
