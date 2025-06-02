@@ -1,7 +1,7 @@
 package com.back;
 
-import com.back.system.SystemController;
-import com.back.wiseSaying.WiseSayingController;
+import com.back.domain.system.controller.SystemController;
+import com.back.domain.wiseSaying.controller.WiseSayingController;
 
 import java.util.Scanner;
 
@@ -11,8 +11,8 @@ public class App {
     public void run() {
         System.out.println("==명언 앱==");
 
-        WiseSayingController wiseSayingController = new WiseSayingController(scanner);
-        SystemController systemController = new SystemController();
+        WiseSayingController wiseSayingController = AppContext.wiseSayingController;
+        SystemController systemController = AppContext.systemController;
 
         while (true) {
             System.out.print("명령) ");
@@ -25,12 +25,13 @@ public class App {
                 }
                 case "등록" -> wiseSayingController.actionWrite();
                 case "목록" -> wiseSayingController.actionList();
+                case "삭제" -> wiseSayingController.actionDelete();
                 default -> System.out.println("알 수 없는 명령어입니다.");
             }
         }
     }
 
-    public App(Scanner scanner) {
-        this.scanner = scanner;
+    public App() {
+        scanner = AppContext.scanner;
     }
 }
