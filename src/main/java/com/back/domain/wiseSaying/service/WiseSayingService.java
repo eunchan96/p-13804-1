@@ -13,12 +13,16 @@ public class WiseSayingService {
         wiseSayingRepository = AppContext.wiseSayingRepository;
     }
 
-    public void write (String content, String author) {
-        wiseSayingRepository.save(content, author);
+    public void write (WiseSaying wiseSaying) {
+        wiseSayingRepository.save(wiseSaying);
     }
 
     public List<WiseSaying> getforList(){
         return wiseSayingRepository.getForList();
+    }
+
+    public WiseSaying findById(int id) {
+        return wiseSayingRepository.findById(id);
     }
 
     public boolean delete(int id) {
@@ -26,5 +30,12 @@ public class WiseSayingService {
         if (wiseSaying == null) return false;
         wiseSayingRepository.delete(wiseSaying);
         return true;
+    }
+
+    public void modify(WiseSaying wiseSaying, String content, String author) {
+        wiseSaying.setContent(content);
+        wiseSaying.setAuthor(author);
+
+        wiseSayingRepository.save(wiseSaying);
     }
 }
