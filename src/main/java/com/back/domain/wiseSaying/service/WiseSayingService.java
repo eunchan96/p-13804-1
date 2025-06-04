@@ -3,6 +3,7 @@ package com.back.domain.wiseSaying.service;
 import com.back.AppContext;
 import com.back.domain.wiseSaying.entity.WiseSaying;
 import com.back.domain.wiseSaying.repository.WiseSayingRepository;
+import com.back.standard.dto.Pageable;
 
 import java.util.List;
 
@@ -17,12 +18,12 @@ public class WiseSayingService {
         wiseSayingRepository.save(wiseSaying);
     }
 
-    public List<WiseSaying> getforList(String keywordType, String keyword, int pageSize, int pageNum) {
-        if(keyword.isBlank()) return wiseSayingRepository.getForList(pageSize, pageNum);
+    public List<WiseSaying> getforList(String keywordType, String keyword, Pageable pageable) {
+        if(keyword.isBlank()) return wiseSayingRepository.getForList(pageable);
         return switch (keywordType) {
-            case "content" -> wiseSayingRepository.findForListByContent(keyword, pageSize, pageNum);
-            case "author" -> wiseSayingRepository.findForListByAuthor(keyword, pageSize, pageNum);
-            default -> wiseSayingRepository.findForListByContentOrAuthor(keyword, keyword, pageSize, pageNum);
+            case "content" -> wiseSayingRepository.findForListByContent(keyword, pageable);
+            case "author" -> wiseSayingRepository.findForListByAuthor(keyword, pageable);
+            default -> wiseSayingRepository.findForListByContentOrAuthor(keyword, keyword, pageable);
         };
     }
 

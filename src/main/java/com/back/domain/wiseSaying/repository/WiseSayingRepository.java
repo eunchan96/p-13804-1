@@ -1,6 +1,7 @@
 package com.back.domain.wiseSaying.repository;
 
 import com.back.domain.wiseSaying.entity.WiseSaying;
+import com.back.standard.dto.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +19,11 @@ public class WiseSayingRepository {
         }
     }
 
-    public List<WiseSaying> getForList(int pageSize, int pageNum) {
+    public List<WiseSaying> getForList(Pageable pageable) {
         return wiseSayings.reversed()
                 .stream()
-                .skip((long) (pageNum - 1) * pageSize)
-                .limit(pageSize)
+                .skip(pageable.getSkipCount())
+                .limit(pageable.getPageSize())
                 .toList();
     }
 
@@ -44,27 +45,27 @@ public class WiseSayingRepository {
         wiseSayings.remove(wiseSaying);
     }
 
-    public List<WiseSaying> findForListByContent(String keyword, int pageSize, int pageNum) {
+    public List<WiseSaying> findForListByContent(String keyword, Pageable pageable) {
         return wiseSayings.reversed().stream()
                 .filter(wiseSaying -> wiseSaying.getContent().contains(keyword))
-                .skip((long) (pageNum - 1) * pageSize)
-                .limit(pageSize)
+                .skip(pageable.getSkipCount())
+                .limit(pageable.getPageSize())
                 .collect(Collectors.toList());
     }
 
-    public List<WiseSaying> findForListByAuthor(String keyword, int pageSize, int pageNum) {
+    public List<WiseSaying> findForListByAuthor(String keyword, Pageable pageable) {
         return wiseSayings.reversed().stream()
                 .filter(wiseSaying -> wiseSaying.getAuthor().contains(keyword))
-                .skip((long) (pageNum - 1) * pageSize)
-                .limit(pageSize)
+                .skip(pageable.getSkipCount())
+                .limit(pageable.getPageSize())
                 .collect(Collectors.toList()).reversed();
     }
 
-    public List<WiseSaying> findForListByContentOrAuthor(String keyword1, String keyword2, int pageSize, int pageNum) {
+    public List<WiseSaying> findForListByContentOrAuthor(String keyword1, String keyword2, Pageable pageable) {
         return wiseSayings.reversed().stream()
                 .filter(wiseSaying -> wiseSaying.getContent().contains(keyword1) || wiseSaying.getAuthor().contains(keyword2))
-                .skip((long) (pageNum - 1) * pageSize)
-                .limit(pageSize)
+                .skip(pageable.getSkipCount())
+                .limit(pageable.getPageSize())
                 .collect(Collectors.toList());
     }
 }
