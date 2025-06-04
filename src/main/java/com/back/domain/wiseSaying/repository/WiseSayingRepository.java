@@ -38,4 +38,16 @@ public class WiseSayingRepository {
     public void delete(WiseSaying wiseSaying) {
         wiseSayings.remove(wiseSaying);
     }
+
+    public List<WiseSaying> findForListByContent(String keyword) {
+        return wiseSayings.stream()
+                .filter(wiseSaying -> wiseSaying.getContent().contains(keyword))
+                .toList();
+    }
+
+    public List<WiseSaying> findForListByAuthor(String keyword) {
+    return wiseSayings.stream()
+                .filter(wiseSaying -> wiseSaying.getAuthor().contains(keyword))
+                .toList();
+    }
 }
