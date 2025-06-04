@@ -70,5 +70,29 @@ public class Util {
                 return false;
             }
         }
+
+        public static String get(String filePath, String defaultValue) {
+            try {
+                return Files.readString(getPath(filePath));
+            } catch (IOException e) {
+                return defaultValue;
+            }
+        }
+
+        public static boolean notExists(String filePath) {
+            return !exists(filePath);
+        }
+
+        public static void mkdir(String dirPath) {
+            try {
+                Files.createDirectories(getPath(dirPath));
+            } catch (IOException e) {
+                throw new RuntimeException("디렉토리 생성 실패: " + dirPath, e);
+            }
+        }
+
+        public static boolean rmdir(String dirPath) {
+            return delete(dirPath);
+        }
     }
 }
