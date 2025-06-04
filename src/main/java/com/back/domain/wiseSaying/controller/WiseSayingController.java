@@ -33,7 +33,7 @@ public class WiseSayingController {
         System.out.println("번호 / 명언 / 작가");
         System.out.println("-------------------------");
 
-        int pageSize = 5;
+        int pageSize = rq.getParamAsInt("pageSize", 5);
         int pageNum = rq.getParamAsInt("page", 1);
 
         String keywordType = rq.getParam("keywordType", "all");
