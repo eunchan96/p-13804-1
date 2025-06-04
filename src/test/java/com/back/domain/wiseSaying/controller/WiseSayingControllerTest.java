@@ -289,4 +289,25 @@ public class WiseSayingControllerTest {
                 .doesNotContain("7 / 작자미상 7 / 명언 7")
                 .doesNotContain("6 / 작자미상 6 / 명언 6");
     }
+
+    @Test
+    @DisplayName("목록?keyword=명언 1")
+    void t16() {
+        String rs = AppTestRunner.run(
+                makeSampleDataCommand() + "\n목록?keyword=명언 1"
+        );
+
+        assertThat(rs)
+                .contains("1 / 작자미상 1 / 명언 1")
+                .doesNotContain("2 / 작자미상 2 / 명언 2")
+                .doesNotContain("3 / 작자미상 3 / 명언 3")
+                .doesNotContain("4 / 작자미상 4 / 명언 4")
+                .doesNotContain("5 / 작자미상 5 / 명언 5")
+                .doesNotContain("6 / 작자미상 6 / 명언 6")
+                .doesNotContain("7 / 작자미상 7 / 명언 7")
+                .doesNotContain("8 / 작자미상 8 / 명언 8")
+                .doesNotContain("9 / 작자미상 9 / 명언 9")
+                .contains("10 / 작자미상 10 / 명언 10")
+                .contains("페이지 : [1]");
+    }
 }
