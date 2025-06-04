@@ -4,6 +4,7 @@ import com.back.domain.wiseSaying.entity.WiseSaying;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class WiseSayingRepository {
@@ -17,8 +18,10 @@ public class WiseSayingRepository {
         }
     }
 
-    public List<WiseSaying> getForList() {
-        return wiseSayings.reversed();
+    public List<WiseSaying> getForList(int pageSize, int pageNum) {
+        return wiseSayings.reversed()
+                .stream().limit(pageSize)
+                .toList();
     }
 
     public WiseSaying findById(int id) {
@@ -39,15 +42,24 @@ public class WiseSayingRepository {
         wiseSayings.remove(wiseSaying);
     }
 
-    public List<WiseSaying> findForListByContent(String keyword) {
-        return wiseSayings.stream()
+    public List<WiseSaying> findForListByContent(String keyword, int pageSize, int pageNum) {
+        return wiseSayings.reversed().stream()
                 .filter(wiseSaying -> wiseSaying.getContent().contains(keyword))
-                .toList();
+                .limit(pageSize)
+                .collect(Collectors.toList());
     }
 
-    public List<WiseSaying> findForListByAuthor(String keyword) {
-    return wiseSayings.stream()
+    public List<WiseSaying> findForListByAuthor(String keyword, int pageSize, int pageNum) {
+        return wiseSayings.reversed().stream()
                 .filter(wiseSaying -> wiseSaying.getAuthor().contains(keyword))
-                .toList();
+                .limit(pageSize)
+                .collect(Collectors.toList()).reversed();
+    }
+
+    public List<WiseSaying> findForListByContentOrAuthor(String keyword1, String keyword2, int pageSize, int pageNum) {
+        return wiseSayings.reversed().stream()
+                .filter(wiseSaying -> wiseSaying.getContent().contains(keyword1) || wiseSaying.getAuthor().contains(keyword2))
+                .limit(pageSize)
+                .collect(Collectors.toList());
     }
 }

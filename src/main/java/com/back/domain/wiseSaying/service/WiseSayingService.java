@@ -17,12 +17,12 @@ public class WiseSayingService {
         wiseSayingRepository.save(wiseSaying);
     }
 
-    public List<WiseSaying> getforList(String keywordType, String keyword) {
-        if(keyword.isBlank()) return wiseSayingRepository.getForList();
+    public List<WiseSaying> getforList(String keywordType, String keyword, int pageSize, int pageNum) {
+        if(keyword.isBlank()) return wiseSayingRepository.getForList(pageSize, pageNum);
         return switch (keywordType) {
-            case "content" -> wiseSayingRepository.findForListByContent(keyword);
-            case "author" -> wiseSayingRepository.findForListByAuthor(keyword);
-            default -> throw new IllegalArgumentException("알 수 없는 검색 타입입니다: " + keywordType);
+            case "content" -> wiseSayingRepository.findForListByContent(keyword, pageSize, pageNum);
+            case "author" -> wiseSayingRepository.findForListByAuthor(keyword, pageSize, pageNum);
+            default -> wiseSayingRepository.findForListByContentOrAuthor(keyword, keyword, pageSize, pageNum);
         };
     }
 

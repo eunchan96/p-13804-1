@@ -33,10 +33,13 @@ public class WiseSayingController {
         System.out.println("번호 / 명언 / 작가");
         System.out.println("-------------------------");
 
+        int pageSize = 5;
+        int pageNum = rq.getParamAsInt("page", 1);
+
         String keywordType = rq.getParam("keywordType", "all");
         String keyword = rq.getParam("keyword", "");
 
-        for (WiseSaying wiseSaying : wiseSayingsService.getforList(keywordType, keyword)) {
+        for (WiseSaying wiseSaying : wiseSayingsService.getforList(keywordType, keyword, pageSize, pageNum)) {
             System.out.printf("%d / %s / %s\n", wiseSaying.getId(), wiseSaying.getAuthor(), wiseSaying.getContent());
         }
     }
