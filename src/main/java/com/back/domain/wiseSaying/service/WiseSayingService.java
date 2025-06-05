@@ -17,7 +17,7 @@ public class WiseSayingService {
         wiseSayingRepository.save(wiseSaying);
     }
 
-    public Page<WiseSaying> getforList(String keywordType, String keyword, Pageable pageable) {
+    public Page<WiseSaying> getForList(String keywordType, String keyword, Pageable pageable) {
         if(keyword.isBlank()) return wiseSayingRepository.getForList(pageable);
         return switch (keywordType) {
             case "content" -> wiseSayingRepository.findForListByContent(keyword, pageable);
