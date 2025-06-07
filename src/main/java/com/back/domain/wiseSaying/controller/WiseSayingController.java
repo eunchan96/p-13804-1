@@ -7,6 +7,7 @@ import com.back.global.rq.Rq;
 import com.back.standard.dto.Page;
 import com.back.standard.dto.Pageable;
 
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -81,12 +82,14 @@ public class WiseSayingController {
             return;
         }
 
-        WiseSaying wiseSaying = wiseSayingsService.findById(id);
+        Optional<WiseSaying> opWiseSaying = wiseSayingsService.findById(id);
 
-        if (wiseSaying == null) {
+        if (opWiseSaying.isEmpty()) {
             System.out.println(id + "번 명언은 존재하지 않습니다.");
             return;
         }
+
+        WiseSaying wiseSaying = opWiseSaying.get();
 
         System.out.printf("명언(기존) : %s\n", wiseSaying.getContent());
         System.out.print("명언 : ");

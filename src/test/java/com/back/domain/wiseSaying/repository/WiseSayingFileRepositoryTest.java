@@ -32,7 +32,7 @@ public class WiseSayingFileRepositoryTest {
         WiseSaying wiseSaying1 = new WiseSaying("나의 죽음을 적에게 알리지 마라", "이순신");
         wiseSayingFileRepository.save(wiseSaying1);
 
-        WiseSaying foundWiseSaying = wiseSayingFileRepository.findById(1);
+        WiseSaying foundWiseSaying = wiseSayingFileRepository.findById(1).get();
 
         assertThat(
                 foundWiseSaying
@@ -49,7 +49,7 @@ public class WiseSayingFileRepositoryTest {
         wiseSayingFileRepository.save(wiseSaying2);
 
         assertThat(
-                wiseSayingFileRepository.findById(2)
+                wiseSayingFileRepository.findById(2).get()
         ).isEqualTo(wiseSaying2);
     }
 
@@ -66,7 +66,7 @@ public class WiseSayingFileRepositoryTest {
 
         assertThat(
                 wiseSayingFileRepository.findById(1)
-        ).isNull();
+        ).isEmpty();
     }
 
 }

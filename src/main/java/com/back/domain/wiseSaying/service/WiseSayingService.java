@@ -6,6 +6,8 @@ import com.back.domain.wiseSaying.repository.WiseSayingRepository;
 import com.back.standard.dto.Page;
 import com.back.standard.dto.Pageable;
 
+import java.util.Optional;
+
 public class WiseSayingService {
     private final WiseSayingRepository wiseSayingRepository;
 
@@ -26,14 +28,14 @@ public class WiseSayingService {
         };
     }
 
-    public WiseSaying findById(int id) {
+    public Optional<WiseSaying> findById(int id) {
         return wiseSayingRepository.findById(id);
     }
 
     public boolean delete(int id) {
-        WiseSaying wiseSaying = wiseSayingRepository.findById(id);
-        if (wiseSaying == null) return false;
-        wiseSayingRepository.delete(wiseSaying);
+        Optional<WiseSaying> opWiseSaying = wiseSayingRepository.findById(id);
+        if (opWiseSaying.isEmpty()) return false;
+        wiseSayingRepository.delete(opWiseSaying.get());
         return true;
     }
 
