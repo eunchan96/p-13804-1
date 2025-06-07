@@ -45,4 +45,8 @@ public class WiseSayingService {
 
         wiseSayingRepository.save(wiseSaying);
     }
+
+    public void archive() {
+        wiseSayingRepository.archive();
+    }
 }

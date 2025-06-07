@@ -101,4 +101,10 @@ public class WiseSayingController {
 
         wiseSayingsService.modify(wiseSaying, content, author);
     }
+
+    public void actionArchive() {
+        wiseSayingsService.archive();
+
+        System.out.println("data.json 파일의 내용이 갱신되었습니다.");
+    }
 }

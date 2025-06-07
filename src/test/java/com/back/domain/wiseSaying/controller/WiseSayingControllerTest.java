@@ -317,4 +317,23 @@ public class WiseSayingControllerTest {
                 .contains("10 / 작자미상 10 / 명언 10")
                 .contains("페이지 : [1]");
     }
+
+    @Test
+    @DisplayName("빌드")
+    void t17() {
+        String rs = AppTestRunner.run("""
+                등록
+                현재를 사랑하라.
+                작자미상
+                등록
+                과거에 집착하지 마라.
+                작자미상
+                빌드
+                """
+        );
+
+        assertThat(rs)
+                .contains("data.json 파일의 내용이 갱신되었습니다.");
+    }
+
 }
