@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class WiseSayingFileRepository {
+public class WiseSayingFileRepository implements WiseSayingRepository {
     public String getEntityFilePath(WiseSaying wiseSaying) {
         return getEntityFilePath(wiseSaying.getId());
     }
