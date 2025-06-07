@@ -2,7 +2,6 @@ package com.back.domain.wiseSaying.repository;
 
 import com.back.AppContext;
 import com.back.domain.wiseSaying.entity.WiseSaying;
-import com.back.standard.util.Util;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,7 +23,7 @@ public class WiseSayingFileRepositoryTest {
 
     @BeforeEach
     public void beforeEach() {
-        Util.file.rmdir("db/wiseSaying");
+        wiseSayingFileRepository.clear();
     }
 
     @Test

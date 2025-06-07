@@ -45,8 +45,8 @@ public class WiseSayingRepository {
                 .orElse(-1);
     }
 
-    public void delete(WiseSaying wiseSaying) {
-        wiseSayings.remove(wiseSaying);
+    public boolean delete(WiseSaying wiseSaying) {
+        return wiseSayings.remove(wiseSaying);
     }
 
     public Page<WiseSaying> findForListByContent(String keyword, Pageable pageable) {

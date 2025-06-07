@@ -6,6 +6,23 @@ import com.back.standard.util.Util;
 import java.util.Map;
 
 public class WiseSayingFileRepository {
+    public String getEntityFilePath(WiseSaying wiseSaying) {
+        return getEntityFilePath(wiseSaying.getId());
+    }
+
+    public String getEntityFilePath(int id) {
+        return getTableDirPath() + "/%d.json".formatted(id);
+    }
+
+    public String getLastIdFilePath() {
+        return getTableDirPath() + "/lastId.txt";
+    }
+
+    public String getTableDirPath() {
+        return "db/wiseSaying";
+    }
+
+
     public void save(WiseSaying wiseSaying) {
         if (wiseSaying.isNew()) {
             int newId = getLastId() + 1;
@@ -14,11 +31,11 @@ public class WiseSayingFileRepository {
         }
         Map<String, Object> wiseSayingMap = wiseSaying.toMap();
         String wiseSayingJsonStr = Util.json.toString(wiseSayingMap);
-        Util.file.set("db/wiseSaying/%d.json".formatted(wiseSaying.getId()), wiseSayingJsonStr);
+        Util.file.set(getEntityFilePath(wiseSaying), wiseSayingJsonStr);
     }
 
     public WiseSaying findById(int id) {
-        String wiseSayingJsonStr = Util.file.get("db/wiseSaying/%d.json".formatted(id), "");
+        String wiseSayingJsonStr = Util.file.get(getEntityFilePath(id), "");
 
         if (wiseSayingJsonStr.isEmpty()) {
             return null;
@@ -30,16 +47,20 @@ public class WiseSayingFileRepository {
     }
 
     private int getLastId() {
-        return Util.file.getAsInt("db/wiseSaying/lastId.txt", 0);
+        return Util.file.getAsInt(getLastIdFilePath(), 0);
     }
 
     private void setLastId(int newId) {
-        Util.file.set("db/wiseSaying/lastId.txt", newId);
+        Util.file.set(getLastIdFilePath(), newId);
     }
 
     public boolean delete(WiseSaying wiseSaying) {
-        String filePath = "db/wiseSaying/%d.json".formatted(wiseSaying.getId());
+        String filePath = getEntityFilePath(wiseSaying);
 
         return Util.file.delete(filePath);
+    }
+
+    public void clear() {
+        Util.file.rmdir(getTableDirPath());
     }
 }
