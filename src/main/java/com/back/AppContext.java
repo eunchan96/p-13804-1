@@ -18,17 +18,17 @@ public class AppContext {
     public static WiseSayingController wiseSayingController;
     public static SystemController systemController;
 
-    public static void renew(Scanner _scanner) {
+    public static void renew(Scanner _scanner, boolean isFileMode) {
         scanner = _scanner;
         wiseSayingMemoryRepository = new WiseSayingMemoryRepository();
         wiseSayingFileRepository = new WiseSayingFileRepository();
-        wiseSayingRepository = wiseSayingMemoryRepository;
+        wiseSayingRepository = isFileMode ? wiseSayingFileRepository : wiseSayingMemoryRepository;
         wiseSayingService = new WiseSayingService();
         wiseSayingController = new WiseSayingController();
         systemController = new SystemController();
     }
 
     public static void renew() {
-        renew(new Scanner(System.in));
+        renew(new Scanner(System.in), true);
     }
 }
