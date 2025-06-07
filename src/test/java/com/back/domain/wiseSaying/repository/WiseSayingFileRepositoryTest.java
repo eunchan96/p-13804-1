@@ -2,6 +2,7 @@ package com.back.domain.wiseSaying.repository;
 
 import com.back.AppContext;
 import com.back.domain.wiseSaying.entity.WiseSaying;
+import com.back.standard.dto.Pageable;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -69,4 +70,74 @@ public class WiseSayingFileRepositoryTest {
         ).isEmpty();
     }
 
+    @Test
+    @DisplayName("명언 다건 조회")
+    void t4() {
+        WiseSaying wiseSaying1 = new WiseSaying("호랑이 굴에 가야 호랑이 새끼를 잡는다.", "이순신");
+        wiseSayingFileRepository.save(wiseSaying1);
+
+        WiseSaying wiseSaying2 = new WiseSaying("나의 죽음을 적들에게 알리지 말라.", "이순신");
+        wiseSayingFileRepository.save(wiseSaying2);
+
+        assertThat(
+                wiseSayingFileRepository.findForList(new Pageable(1, 5)).getContent()
+        ).containsExactly(wiseSaying2, wiseSaying1);
+    }
+
+    @Test
+    @DisplayName("명언 다건조회, Content로 조회")
+    void t5() {
+        WiseSaying wiseSaying1 = new WiseSaying("꿈을 지녀라. 그러면 어려운 현실을 이길 수 있다.", "괴테");
+        wiseSayingFileRepository.save(wiseSaying1);
+
+        WiseSaying wiseSaying2 = new WiseSaying("나의 죽음을 적들에게 알리지 말라.", "이순신");
+        wiseSayingFileRepository.save(wiseSaying2);
+
+        WiseSaying wiseSaying3 = new WiseSaying("생생한 꿈은 현실이 된다.", "작자미상");
+        wiseSayingFileRepository.save(wiseSaying3);
+
+        assertThat(
+                wiseSayingFileRepository.findForListByContent("꿈", new Pageable(1, 5)).getContent()
+        ).containsExactly(wiseSaying3, wiseSaying1);
+    }
+
+    @Test
+    @DisplayName("명언 다건조회, Author로 조회")
+    void t6() {
+        WiseSaying wiseSaying1 = new WiseSaying("꿈을 지녀라. 그러면 어려운 현실을 이길 수 있다.", "괴테");
+        wiseSayingFileRepository.save(wiseSaying1);
+
+        WiseSaying wiseSaying2 = new WiseSaying("내가 누구게", "작자미상");
+        wiseSayingFileRepository.save(wiseSaying2);
+
+        WiseSaying wiseSaying3 = new WiseSaying("생생한 꿈은 현실이 된다.", "작자미상");
+        wiseSayingFileRepository.save(wiseSaying3);
+
+        assertThat(
+                wiseSayingFileRepository.findForListByAuthor("작자미상", new Pageable(1, 5)).getContent()
+        ).containsExactly(wiseSaying3, wiseSaying2);
+    }
+
+    @Test
+    @DisplayName("명언 다건조회, findForListByContentContainingOrAuthorContaining")
+    public void t7() {
+        WiseSaying wiseSaying1 = new WiseSaying("꿈을 지녀라. 그러면 어려운 현실을 이길 수 있다.", "괴테");
+        wiseSayingFileRepository.save(wiseSaying1);
+
+        WiseSaying wiseSaying2 = new WiseSaying("나의 삶의 가치는 나의 결정에 달려있다.", "아인슈타인");
+        wiseSayingFileRepository.save(wiseSaying2);
+
+        WiseSaying wiseSaying3 = new WiseSaying("생생한 꿈은 현실이 된다.", "작자미상");
+        wiseSayingFileRepository.save(wiseSaying3);
+
+        WiseSaying wiseSaying4 = new WiseSaying("신은 주사위놀이를 하지 않는다.", "아인슈타인");
+        wiseSayingFileRepository.save(wiseSaying4);
+
+        WiseSaying wiseSaying5 = new WiseSaying("나의 상상은 현실이 된다.", "아무개");
+        wiseSayingFileRepository.save(wiseSaying5);
+
+        assertThat(
+                wiseSayingFileRepository.findForListByContentOrAuthor("상", "상", new Pageable(1, 5)).getContent()
+        ).containsExactly(wiseSaying5, wiseSaying3);
+    }
 }

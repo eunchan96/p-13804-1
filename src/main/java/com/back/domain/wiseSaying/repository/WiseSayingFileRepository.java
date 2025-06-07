@@ -1,10 +1,15 @@
 package com.back.domain.wiseSaying.repository;
 
 import com.back.domain.wiseSaying.entity.WiseSaying;
+import com.back.standard.dto.Page;
+import com.back.standard.dto.Pageable;
 import com.back.standard.util.Util;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class WiseSayingFileRepository {
     public String getEntityFilePath(WiseSaying wiseSaying) {
@@ -63,5 +68,54 @@ public class WiseSayingFileRepository {
 
     public void clear() {
         Util.file.rmdir(getTableDirPath());
+    }
+
+    private Page<WiseSaying> createPage(List<WiseSaying> filterd, Pageable pageable) {
+        int totalCount = filterd.size();
+
+        List<WiseSaying> content = filterd
+                .stream()
+                .skip(pageable.getSkipCount())
+                .limit(pageable.getPageSize())
+                .toList();
+
+        return new Page<>(totalCount, pageable.getPageNum(), pageable.getPageSize(), content);
+    }
+
+    public Page<WiseSaying> findForList(Pageable pageable) {
+        List<WiseSaying> filterd = findAll().toList();
+        return createPage(filterd, pageable);
+    }
+
+    private Stream<WiseSaying> findAll() {
+        return Util.file.walkRegularFiles(getTableDirPath(), "\\d+\\.json")
+                .map(path -> Util.file.get(path.toString(), ""))
+                .map(Util.json::toMap)
+                .map(WiseSaying::new)
+                .sorted(Comparator.comparingInt(WiseSaying::getId).reversed());
+    }
+
+    public Page<WiseSaying> findForListByContent(String keyword, Pageable pageable) {
+        List<WiseSaying> filtered = findAll()
+                .filter(wiseSaying -> wiseSaying.getContent().contains(keyword))
+                .toList();
+
+        return createPage(filtered, pageable);
+    }
+
+    public Page<WiseSaying> findForListByAuthor(String keyword, Pageable pageable) {
+        List<WiseSaying> filtered = findAll()
+                .filter(wiseSaying -> wiseSaying.getAuthor().contains(keyword))
+                .toList();
+
+        return createPage(filtered, pageable);
+    }
+
+    public Page<WiseSaying> findForListByContentOrAuthor(String contentKeyword, String authorKeyword, Pageable pageable) {
+        List<WiseSaying> filtered = findAll()
+                .filter(wiseSaying -> wiseSaying.getContent().contains(contentKeyword) || wiseSaying.getAuthor().contains(authorKeyword))
+                .toList();
+
+        return createPage(filtered, pageable);
     }
 }

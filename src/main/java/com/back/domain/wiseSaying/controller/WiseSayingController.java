@@ -46,7 +46,7 @@ public class WiseSayingController {
         String keywordType = rq.getParam("keywordType", "all");
         String keyword = rq.getParam("keyword", "");
 
-        Page<WiseSaying> wiseSayingPage = wiseSayingsService.getForList(keywordType, keyword, pageable);
+        Page<WiseSaying> wiseSayingPage = wiseSayingsService.findForList(keywordType, keyword, pageable);
 
         for (WiseSaying wiseSaying : wiseSayingPage.getContent()) {
             System.out.printf("%d / %s / %s\n", wiseSaying.getId(), wiseSaying.getAuthor(), wiseSaying.getContent());

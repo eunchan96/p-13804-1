@@ -6,6 +6,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class Util {
     public static class file {
@@ -112,6 +113,16 @@ public class Util {
 
         public static boolean rmdir(String dirPath) {
             return delete(dirPath);
+        }
+
+        public static Stream<Path> walkRegularFiles(String dirPath, String fileNameRegex) {
+            try {
+                return Files.walk(Path.of(dirPath)) // 순회
+                        .filter(Files::isRegularFile) // 일반 파일만 필터링 (폴터 제외)
+                        .filter(path -> path.getFileName().toString().matches(fileNameRegex)); // 정규식으로 파일 이름 필터링
+            } catch (IOException e) {
+                return Stream.empty();
+            }
         }
     }
 

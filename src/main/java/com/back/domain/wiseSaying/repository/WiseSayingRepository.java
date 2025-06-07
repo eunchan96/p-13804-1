@@ -20,7 +20,7 @@ public class WiseSayingRepository {
         }
     }
 
-    public Page<WiseSaying> getForList(Pageable pageable) {
+    public Page<WiseSaying> findForList(Pageable pageable) {
         int totalCount = wiseSayings.size();
 
         List<WiseSaying> content = wiseSayings.reversed()
