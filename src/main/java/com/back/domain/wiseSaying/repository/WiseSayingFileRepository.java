@@ -1,7 +1,6 @@
 package com.back.domain.wiseSaying.repository;
 
 import com.back.domain.wiseSaying.entity.WiseSaying;
-import com.back.global.app.AppConfig;
 import com.back.standard.dto.Page;
 import com.back.standard.dto.Pageable;
 import com.back.standard.util.Util;
@@ -10,7 +9,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 public class WiseSayingFileRepository implements WiseSayingRepository {
     public String getEntityFilePath(WiseSaying wiseSaying) {
@@ -25,9 +23,6 @@ public class WiseSayingFileRepository implements WiseSayingRepository {
         return getTableDirPath() + "/lastId.txt";
     }
 
-    public String getTableDirPath() {
-        return AppConfig.getMode() + "Db/wiseSaying";
-    }
 
 
     public void save(WiseSaying wiseSaying) {
@@ -84,20 +79,21 @@ public class WiseSayingFileRepository implements WiseSayingRepository {
     }
 
     public Page<WiseSaying> findForList(Pageable pageable) {
-        List<WiseSaying> filterd = findAll().toList();
+        List<WiseSaying> filterd = findAll();
         return createPage(filterd, pageable);
     }
 
-    private Stream<WiseSaying> findAll() {
+    public List<WiseSaying> findAll() {
         return Util.file.walkRegularFiles(getTableDirPath(), "\\d+\\.json")
                 .map(path -> Util.file.get(path.toString(), ""))
                 .map(Util.json::toMap)
                 .map(WiseSaying::new)
-                .sorted(Comparator.comparingInt(WiseSaying::getId).reversed());
+                .sorted(Comparator.comparingInt(WiseSaying::getId).reversed())
+                .toList();
     }
 
     public Page<WiseSaying> findForListByContent(String keyword, Pageable pageable) {
-        List<WiseSaying> filtered = findAll()
+        List<WiseSaying> filtered = findAll().stream()
                 .filter(wiseSaying -> wiseSaying.getContent().contains(keyword))
                 .toList();
 
@@ -105,7 +101,7 @@ public class WiseSayingFileRepository implements WiseSayingRepository {
     }
 
     public Page<WiseSaying> findForListByAuthor(String keyword, Pageable pageable) {
-        List<WiseSaying> filtered = findAll()
+        List<WiseSaying> filtered = findAll().stream()
                 .filter(wiseSaying -> wiseSaying.getAuthor().contains(keyword))
                 .toList();
 
@@ -113,7 +109,7 @@ public class WiseSayingFileRepository implements WiseSayingRepository {
     }
 
     public Page<WiseSaying> findForListByContentOrAuthor(String contentKeyword, String authorKeyword, Pageable pageable) {
-        List<WiseSaying> filtered = findAll()
+        List<WiseSaying> filtered = findAll().stream()
                 .filter(wiseSaying -> wiseSaying.getContent().contains(contentKeyword) || wiseSaying.getAuthor().contains(authorKeyword))
                 .toList();
 

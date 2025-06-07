@@ -23,7 +23,7 @@ public class WiseSayingMemoryRepository implements WiseSayingRepository {
     public Page<WiseSaying> findForList(Pageable pageable) {
         int totalCount = wiseSayings.size();
 
-        List<WiseSaying> content = wiseSayings.reversed()
+        List<WiseSaying> content = findAll()
                 .stream()
                 .skip(pageable.getSkipCount())
                 .limit(pageable.getPageSize())
@@ -50,8 +50,12 @@ public class WiseSayingMemoryRepository implements WiseSayingRepository {
         return wiseSayings.remove(wiseSaying);
     }
 
+    public List<WiseSaying> findAll() {
+        return wiseSayings.reversed();
+    }
+
     public Page<WiseSaying> findForListByContent(String keyword, Pageable pageable) {
-        List<WiseSaying> filtered = wiseSayings.reversed().stream()
+        List<WiseSaying> filtered = findAll().stream()
                 .filter(wiseSaying -> wiseSaying.getContent().contains(keyword))
                 .toList();
 
@@ -66,7 +70,7 @@ public class WiseSayingMemoryRepository implements WiseSayingRepository {
     }
 
     public Page<WiseSaying> findForListByAuthor(String keyword, Pageable pageable) {
-        List<WiseSaying> filtered = wiseSayings.reversed().stream()
+        List<WiseSaying> filtered = findAll().stream()
                 .filter(wiseSaying -> wiseSaying.getAuthor().contains(keyword))
                 .toList();
 
@@ -81,7 +85,7 @@ public class WiseSayingMemoryRepository implements WiseSayingRepository {
     }
 
     public Page<WiseSaying> findForListByContentOrAuthor(String keyword1, String keyword2, Pageable pageable) {
-        List<WiseSaying> filtered = wiseSayings.reversed().stream()
+        List<WiseSaying> filtered = findAll().stream()
                 .filter(wiseSaying -> wiseSaying.getContent().contains(keyword1) || wiseSaying.getAuthor().contains(keyword2))
                 .toList();
 
